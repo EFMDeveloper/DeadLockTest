@@ -11,5 +11,7 @@ namespace DeadLockTestJulisyAmador.Services
         Task<List<PersonViewModel>> GetAll();
         Task<Person> GetById(int Id);
         Task<bool> Save(Person model);
+
+        Task<List<PositionViewModel>> GetPositions();
     }
 }

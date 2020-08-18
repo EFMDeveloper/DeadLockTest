@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeadLockTestJulisyAmador.DataContext;
 using DeadLockTestJulisyAmador.Models;
 using DeadLockTestJulisyAmador.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using DeadLockTestJulisyAmador.Services;
-using Microsoft.AspNetCore.Authorization;
 
 namespace DeadLockTestJulisyAmador.Controllers
 {
-        
-    [Route("api/[controller]")]
+
     [ApiController]
-    public class PersonController : Controller
+    [Route("api/[controller]")]    
+    public class PersonController : ControllerBase
     {
         private readonly IPersonService _Service;
 
@@ -43,17 +41,17 @@ namespace DeadLockTestJulisyAmador.Controllers
                 Ok(result);
         }
 
-        //[HttpGet("GetDataModel")]
-        //public IActionResult GetPersonModel()
-        //{
-        //    //var context = new ApplicationDbContext();
-        //    //var result = new PersonViewModel();
-        //    //result.Positions = context.Positions.ToList();
-        //    return                Ok(result);
-        //}
+        [HttpGet("GetDataModel")]
+        public async Task<IActionResult> GetPersonModel()
+        {
+            var result = new PersonViewModel();
 
-        [HttpPost]
-        public async Task<IActionResult> SetPerson([FromBody] PersonViewModel model)
+            result.Positions = await _Service.GetPositions();
+            return Ok(result);
+        }
+
+        [HttpPost("SetPerson")]
+        public async Task<IActionResult> SetPerson(PersonViewModel model)
         {
             try
             {
@@ -73,11 +71,12 @@ namespace DeadLockTestJulisyAmador.Controllers
                 {
                     Id = model.Id,
                     FirstName = model.FirstName,
+                    LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
                     PositionId = model.PositionId
                 };
 
-                var result =await _Service.Save(item);
+                var result = await _Service.Save(item);
 
                 return
                     Ok(result);
@@ -88,7 +87,7 @@ namespace DeadLockTestJulisyAmador.Controllers
             }
         }
 
-        [HttpPost("Delete")]
+        [HttpGet("Delete/{id}")]
         public async Task<ActionResult> DeletePerson(int Id)
         {
             if (Id <= 0)

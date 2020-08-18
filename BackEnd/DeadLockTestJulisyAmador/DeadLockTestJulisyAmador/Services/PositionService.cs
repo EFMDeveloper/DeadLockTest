@@ -49,7 +49,14 @@ namespace DeadLockTestJulisyAmador.Services
         public async Task<bool> Save(Position model)
         {
             var result = false;
-            await _context.Positions.AddAsync(model);
+            if(model.Id > 0)
+            {
+                var datos = await _context.Positions.FirstOrDefaultAsync(x => x.Id == model.Id);
+                datos.Description = model.Description;
+
+            }else
+                await _context.Positions.AddAsync(model);
+
             await _context.SaveChangesAsync();
             result = true;
 

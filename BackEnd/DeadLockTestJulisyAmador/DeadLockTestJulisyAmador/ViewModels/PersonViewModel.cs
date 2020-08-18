@@ -14,6 +14,6 @@ namespace DeadLockTestJulisyAmador.ViewModels
         public string PhoneNumber { get; set; }
         public int PositionId { get; set; }
         public string PositionDesc { get; set; }
-        public IEnumerable<Position> Positions { get; set; }
+        public List<PositionViewModel> Positions { get; set; }
     }
 }

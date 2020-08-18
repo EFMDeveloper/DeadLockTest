@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using DeadLockTestJulisyAmador.Models;
 using DeadLockTestJulisyAmador.Services;
 using DeadLockTestJulisyAmador.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeadLockTestJulisyAmador.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PositionController : Controller
+    public class PositionController : ControllerBase
     {
         private readonly IPositionService _Service;
 
@@ -22,7 +22,7 @@ namespace DeadLockTestJulisyAmador.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllPosition()
+        public async Task<IActionResult> GetAllPosition()
         
         {
             var result = await _Service.GetAll();
@@ -40,10 +40,10 @@ namespace DeadLockTestJulisyAmador.Controllers
             return
                 Ok(result);
         }
-              
 
-        [HttpPost]
-        public async Task<IActionResult> SetPosition([FromBody] PositionViewModel model)
+
+        [HttpPost("SetPosition")]
+        public async Task<IActionResult> SetPosition(PositionViewModel model)
         {
             try
             {
@@ -54,6 +54,7 @@ namespace DeadLockTestJulisyAmador.Controllers
 
                 var item = new Position
                 {
+                    Id= model.Id,
                     Description = model.Description
                 };
 
@@ -68,7 +69,7 @@ namespace DeadLockTestJulisyAmador.Controllers
             }
         }
 
-        [HttpPost("Delete")]
+        [HttpGet("Delete/{id}")]
         public async Task<ActionResult> DeletePosition(int Id)
         {
             if (Id <= 0)

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "A0ssAAl66pvFqW15l1BVoopMIR6qntPCAmlPEiWPHVxsH6EraBE1lZXH9MZKkm1qkFgd2bhhHB8Zo3JXjFnzzA==",
+  "success": true,
+  "projectFilePath": "C:\\Proyectos\\DeadLockTest\\BackEnd\\DeadLockTestJulisyAmador\\WebApplication1\\WebApplication1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Amador\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -24,19 +24,16 @@ namespace DeadLockTestJulisyAmador
         }
 
         public IConfiguration Configuration { get; }
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
-                options.AddPolicy(MyAllowSpecificOrigins,
-                builder =>
-                {
-                    builder.WithOrigins("*");
-                });
-            });
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
 
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -52,7 +49,13 @@ namespace DeadLockTestJulisyAmador
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+            app.UseCors(options =>
+                   options.WithOrigins("*")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   );
+
 
             app.UseRouting();
 
@@ -62,6 +65,7 @@ namespace DeadLockTestJulisyAmador
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
